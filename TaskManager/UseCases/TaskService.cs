@@ -12,7 +12,7 @@ public class TaskService : ITaskService
     private readonly ITaskReader _reader;
     private readonly TaskValidation _taskValidation;
     
-    public TaskService(ITaskReader reader, TaskValidation taskValidation)
+    public TaskService(ITaskReader reader)
     {
         _reader = reader;
         Tasks = LoadTasksStored();

@@ -45,7 +45,7 @@ public class TaskService : ITaskService
         throw new NotImplementedException();
     }
 
-    public void DeleteTask(string taskId)
+    public void DeleteTask(Guid taskId)
     {
         throw new NotImplementedException();
     }

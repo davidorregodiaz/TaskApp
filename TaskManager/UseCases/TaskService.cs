@@ -40,7 +40,7 @@ public class TaskService : ITaskService
         }
     }
 
-    public void UpdateTask(string taskId)
+    public void UpdateTask(Guid taskId,string taskDescription)
     {
         throw new NotImplementedException();
     }

@@ -26,15 +26,12 @@ public class TaskService : ITaskService
         {
             var cmds = createCommand.Split(" ");
             try
-            {
-                if (_taskValidation.ValidateTask(cmds))
-                {
-                    string taskDescription = string.Join(" ",cmds.Skip(2));
-                    TodoTask newTask = new TodoTask { Description = taskDescription };
-                    Tasks?.Add(newTask);
-                    StoreTasks(Tasks!);
-                    Console.WriteLine($"Created new task: {taskDescription} , Id: {newTask.Id}");
-                }
+            { 
+                string taskDescription = string.Join(" ",cmds.Skip(2));
+                TodoTask newTask = new TodoTask { Description = taskDescription };
+                Tasks?.Add(newTask);
+                StoreTasks(Tasks!);
+                Console.WriteLine($"Created new task: {taskDescription} , Id: {newTask.Id}");
             }
             catch (AppException appException)
             {

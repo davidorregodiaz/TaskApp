@@ -59,7 +59,7 @@ public class TaskService : ITaskService
         File.WriteAllText(Path.Combine(path,"tasks.json"),jsonString);
     }
 
-    public void UpdateStatus(string taskId,string status)
+    public void UpdateStatus(Guid taskId,string status)
     {
         throw new NotImplementedException();
     }

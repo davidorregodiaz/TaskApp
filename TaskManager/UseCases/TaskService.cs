@@ -15,7 +15,6 @@ public class TaskService : ITaskService
     public TaskService(ITaskReader reader, TaskValidation taskValidation)
     {
         _reader = reader;
-        _taskValidation = taskValidation;
         Tasks = LoadTasksStored();
     }
 

@@ -10,7 +10,6 @@ public class TaskService : ITaskService
 {
     public List<TodoTask>? Tasks;
     private readonly ITaskReader _reader;
-    private readonly TaskValidation _taskValidation;
     
     public TaskService(ITaskReader reader)
     {

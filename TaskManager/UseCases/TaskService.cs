@@ -1,69 +1,118 @@
 using System.Text.Json;
+using ConsoleTables;
 using TaskManager.Domain;
 using TaskManager.Domain.Errors;
 using TaskManager.Interfaces;
-using TaskManager.UseCases.Validation;
+using TaskManager.Util;
 
 namespace TaskManager.UseCases;
 
 public class TaskService : ITaskService
 {
-    public List<TodoTask>? Tasks;
+    private readonly List<TodoTask>? _tasks;
     private readonly ITaskReader _reader;
     
     public TaskService(ITaskReader reader)
     {
         _reader = reader;
-        Tasks = LoadTasksStored();
+        _tasks = _reader.GetTasks();
     }
 
 
-    public void CreateTask(string createCommand)
+    public void CreateTask(string taskDescription)
     {
-        if (!string.IsNullOrEmpty(createCommand))
+        if (!string.IsNullOrEmpty(taskDescription))
         {
-            var cmds = createCommand.Split(" ");
-            try
-            { 
-                string taskDescription = string.Join(" ",cmds.Skip(2));
-                TodoTask newTask = new TodoTask { Description = taskDescription };
-                Tasks?.Add(newTask);
-                StoreTasks(Tasks!);
-                Console.WriteLine($"Created new task: {taskDescription} , Id: {newTask.Id}");
-            }
-            catch (AppException appException)
+            TodoTask newTask = new TodoTask { Description = taskDescription };
+            _tasks?.Add(newTask);
+            _reader.Store(_tasks!);
+            Message.PrintInfo($"Created new task: {taskDescription} , Id: {newTask.Id}");
+        }
+    }
+    public void UpdateTask(Guid taskId,string taskDescription)
+    {
+        if (_tasks is not null)
+        {
+            var task = _tasks.FirstOrDefault(t => t.Id == taskId);
+            if (task is not null)
             {
-                Console.WriteLine(appException.Message);
+                task.Description = taskDescription;
+                task.UpdatedAt = DateTime.UtcNow;
+                _reader.Store(_tasks!);
+                Message.PrintUpdate($"Update: {task.Description} , Id: {task.Id}");
+                return;
+            }
+            Message.PrintError("Task not found");
+        }
+    }
+    public void DeleteTask(Guid taskId)
+    {
+        if (_tasks is not null)
+        {
+            var task = _tasks.FirstOrDefault(t => t.Id == taskId);
+            if (task is not null)
+            {
+                _tasks.Remove(task);
+                _reader.Store(_tasks!);
+                Message.PrintSuccess($"Deleted {task.Description} , Id: {task.Id}");
+                return;
+            }
+            Message.PrintError("Task not found");
+        }
+    }
+    public void UpdateStatus(Guid taskId,string status)
+    {
+        if (_tasks is not null)
+        {
+            var task = _tasks.FirstOrDefault(t => t.Id == taskId);
+            if (task is not null)
+            {
+                if (Enum.TryParse<Status>(status, true, out var taskStatus))
+                {
+                    task.Status = taskStatus;
+                    task.UpdatedAt = DateTime.UtcNow;
+                    _reader.Store(_tasks!);
+                    Message.PrintUpdate($"Updated: {taskStatus} , Id: {taskId}");
+                }
+                else
+                {
+                    Message.PrintError("Invalid command");
+                }
+            }
+            else
+            {
+                Message.PrintError("Task not found");
             }
         }
     }
 
-    public void UpdateTask(Guid taskId,string taskDescription)
+    public void CreateTaskTable()
     {
-        throw new NotImplementedException();
+        var table = new ConsoleTable("ID", "Description", "Status" , "CreatedAt", "UpdatedAt");
+        foreach (var task in _tasks)
+        {
+            table.AddRow(task.Id, task.Description, task.Status, task.CreatedAt,task.UpdatedAt);
+        }
+        table.Write();
     }
 
-    public void DeleteTask(Guid taskId)
+    public void CreateDoneTaskTable()
     {
-        throw new NotImplementedException();
-    }
-    
-
-    public void StoreTasks(List<TodoTask> tasksToStore)
-    {
-        string path = "C:\\Users\\david\\RiderProjects\\TaskManager\\TaskManager\\Data";
-        var jsonOptions = new JsonSerializerOptions{WriteIndented = true};
-        var jsonString = JsonSerializer.Serialize(tasksToStore, jsonOptions);
-        File.WriteAllText(Path.Combine(path,"tasks.json"),jsonString);
+        var table = new ConsoleTable("ID", "Description", "Status" , "CreatedAt", "UpdatedAt");
+        foreach (var task in _tasks.Where(t => t.Status == Status.Done))
+        {
+            table.AddRow(task.Id, task.Description, task.Status, task.CreatedAt,task.UpdatedAt);
+        }
+        table.Write();
     }
 
-    public void UpdateStatus(Guid taskId,string status)
+    public void CreateInProgressTaskTable()
     {
-        throw new NotImplementedException();
-    }
-
-    private List<TodoTask>? LoadTasksStored()
-    {
-        return _reader.GetTasks();
+        var table = new ConsoleTable("ID", "Description", "Status" , "CreatedAt", "UpdatedAt");
+        foreach (var task in _tasks.Where(t => t.Status == Status.InProgress))
+        {
+            table.AddRow(task.Id, task.Description, task.Status, task.CreatedAt,task.UpdatedAt);
+        }
+        table.Write();
     }
 }

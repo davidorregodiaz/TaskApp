@@ -1,4 +1,4 @@
-namespace TaskManager.Util;
+namespace TaskManager.Domain;
 
 public enum Status
 {

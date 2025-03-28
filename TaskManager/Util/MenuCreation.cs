@@ -1,8 +1,7 @@
 using TaskManager.Interfaces;
 using TaskManager.UseCases;
-using TaskManager.Util;
 
-namespace TaskManager;
+namespace TaskManager.Util;
 
 public class MenuCreation
 {

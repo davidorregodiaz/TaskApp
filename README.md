@@ -57,12 +57,10 @@ Clean Architecture divide el sistema en capas con dependencias que van de afuera
 - 🗂️ Implementar una base de datos (SQL Server o SQLite)
 - 🌐 Crear una versión con ASP.NET Core MVC o Blazor
 - 🔍 Buscar tareas por título o palabra clave
-
-
-https://roadmap.sh/projects/task-tracker
 - 🛠️ Agregar validaciones más complejas
 - 📅 Notificaciones o recordatorios por fecha límite
 
 
+https://roadmap.sh/projects/task-tracker
 
 

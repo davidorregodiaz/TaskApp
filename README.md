@@ -1,4 +1,4 @@
-# ✅ TodoTask - Gestor de Tareas en Consola
+# ✅ TodoTask - Gestor de Tareas en Consola 
 
 TodoTask es una aplicación de consola desarrollada en **C#** que permite gestionar tareas de forma eficiente. Fue construida aplicando **principios SOLID** y una **arquitectura limpia (Clean Architecture)** para garantizar una estructura escalable, mantenible y fácilmente testeable.
 
@@ -57,6 +57,9 @@ Clean Architecture divide el sistema en capas con dependencias que van de afuera
 - 🗂️ Implementar una base de datos (SQL Server o SQLite)
 - 🌐 Crear una versión con ASP.NET Core MVC o Blazor
 - 🔍 Buscar tareas por título o palabra clave
+
+
+https://roadmap.sh/projects/task-tracker
 - 🛠️ Agregar validaciones más complejas
 - 📅 Notificaciones o recordatorios por fecha límite
 

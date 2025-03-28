@@ -57,7 +57,7 @@ public class TaskHandler
     private void UpdateTask(string[] cmds)
     {
         var taskId = _parser.Parse(cmds[2]);
-        _taskService.UpdateTask(taskId, cmds[1]);
+        _taskService.UpdateTask(taskId, string.Join(" ",cmds.Skip(3)));
     }
 
     private void UpdateStatus(string[] cmds)
